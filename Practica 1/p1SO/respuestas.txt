@@ -1,0 +1,11 @@
+Javier Orbis Ramírez y Pablo García Fernández
+
+Ejercicio 1
+a)
+Compilación: gcc -g show_file.c -o show_file_out
+Ejecución: ./show_file_out ejemplo.txt
+
+b)
+gcc (ver apartado a)
+make
+
