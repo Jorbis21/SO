@@ -14,7 +14,7 @@ int print_text_file(char *path)
 	/* To be completed (part A) */
 	FILE *studentF;
 	student_t student;
-	char *aux = malloc(sizeof(char)), *buffer = malloc(sizeof(student_t));
+	char *aux = malloc(sizeof(char)), *buffer;
 	short int numStudent, i = 0;
 	studentF = fopen(path, "r");
 	if(studentF == NULL){
@@ -23,20 +23,23 @@ int print_text_file(char *path)
 	/**Hacer esta parte con fgets para meterlo todo en un buffer to tocho
 	 * usar el strsep para coger los datos y mostrarlos
 	*/
-	fread(aux, sizeof(char), 1 ,studentF);
+	fgets(aux, sizeof(char) + 1, studentF);
 	numStudent = atoi(aux);
-	while(feof(path) != 0 && i < numStudent){
+	fgets(aux, sizeof(char) + 1, studentF);
+	while(i < numStudent){
+		buffer = malloc(sizeof(student_t));
 		fgets(buffer, sizeof(student_t), studentF);
-		strsep(buffer, ":");
-		student.student_id = atoi();//revisar bien como funciona strsep
-		*student.NIF = strsep(buffer, ":");
-		student.first_name = strsep(buffer, ":");
-		student.last_name = strsep(buffer, ":");
+		student.student_id = atoi(strsep(&buffer, ":"));//revisar bien como funciona strsep
+		strcpy(student.NIF, strsep(&buffer, ":"));
+		student.first_name = strsep(&buffer, ":");
+		student.last_name = strsep(&buffer, ":");
+		student.last_name[strlen(student.last_name)-1] = '\0';
+
 		printf("[ENTRY #%d]\n", i);
-		printf("student_id=%d", student.student_id);
-		printf("NIF=%s", student.NIF);
-		printf("first_name=%s", student.first_name);
-		printf("last_name=%s", student.last_name);
+		printf("	student_id=%d\n", student.student_id);
+		printf("	NIF=%s\n", student.NIF);
+		printf("	first_name=%s\n", student.first_name);
+		printf("	last_name=%s\n", student.last_name);
 		i++;
 	}
 	return 0;
