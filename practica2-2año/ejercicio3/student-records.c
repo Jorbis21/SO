@@ -20,9 +20,7 @@ int print_text_file(char *path)
 	if(studentF == NULL){
 		printf("Failed to open the file %s", path);
 	}
-	/**Hacer esta parte con fgets para meterlo todo en un buffer to tocho
-	 * usar el strsep para coger los datos y mostrarlos
-	*/
+	
 	fgets(aux, sizeof(char) + 1, studentF);
 	numStudent = atoi(aux);
 	fgets(aux, sizeof(char) + 1, studentF);
@@ -41,7 +39,9 @@ int print_text_file(char *path)
 		printf("	first_name=%s\n", student.first_name);
 		printf("	last_name=%s\n", student.last_name);
 		i++;
+		free(buffer);
 	}
+	fclose(studentF);
 	return 0;
 }
 
@@ -54,7 +54,49 @@ int print_binary_file(char *path)
 
 int write_binary_file(char *input_file, char *output_file)
 {
-	/* To be completed  (part C) */
+	if (strstr(output_file, ".bin") == NULL)
+	{
+		fprintf(stderr, "Formato de archivo no admitido. Use '.bin'\n");
+		exit(EXIT_FAILURE);
+	}
+	FILE *studentF, *studentFB;
+	student_t student;
+
+	char *aux = malloc(sizeof(char)), *buffer;
+	short int numStudent, i = 0;
+
+	studentF = fopen(input_file, "r");
+	studentFB = fopen(output_file, "w");
+
+	if(studentF == NULL || studentFB == NULL){
+		printf("Failed to open the file %s or %s", input_file, output_file);
+	}
+
+	fgets(aux, sizeof(char)+1, studentF);
+	numStudent = atoi(aux);
+	fgets(aux, sizeof(char)+1, studentF);
+	sprintf(aux, "%d", numStudent);
+	fwrite(aux, sizeof(int), 1, studentFB);
+	while(i < numStudent){
+		//Lectura de los datos
+		buffer = malloc(sizeof(student_t));
+		fgets(buffer, sizeof(student_t), studentF);
+		student.student_id = atoi(strsep(&buffer, ":"));
+		strcpy(student.NIF, strsep(&buffer, ":"));
+		student.first_name = strsep(&buffer, ":");
+		student.last_name = strsep(&buffer, ":");
+		student.last_name[strlen(student.last_name)-1] = '\0';
+		//Escritura de los datos
+		sprintf(aux, "%d", student.student_id);
+		fwrite(aux, sizeof(int), 1, studentFB);
+		fwrite(student.NIF, sizeof(student.NIF), 1, studentFB);
+		fwrite(student.first_name, sizeof(student.first_name), 1, studentFB);
+		fwrite(student.last_name, sizeof(student.last_name), 1, studentFB);
+		free(buffer);
+		i++;
+	}
+	fclose(studentF);
+	fclose(studentFB);
 	return 0;
 }
 
@@ -70,7 +112,7 @@ int main(int argc, char *argv[])
 	ret_code = 0;
 
 	/* Parse command-line options (incomplete code!) */
-	while ((opt = getopt(argc, argv, "hi:p")) != -1)
+	while ((opt = getopt(argc, argv, "hi:po:")) != -1)
 	{
 		switch (opt)
 		{
@@ -82,6 +124,10 @@ int main(int argc, char *argv[])
 			break;
 		case 'p':
 			options.action = PRINT_TEXT_ACT;
+			break;
+		case 'o':
+			options.action = WRITE_BINARY_ACT;
+			options.output_file = optarg;
 			break;
 		/**
 		 **  To be completed ...

@@ -5,7 +5,7 @@
       "name": "C/C++ Runner: Debug Session",
       "type": "cppdbg",
       "request": "launch",
-      "args": ["-i","students-db.txt","-p"],
+      "args": ["-i","students-db.txt","-o","students-db.bin"],
       "stopAtEntry": false,
       "externalConsole": false,
       "cwd": "/home/jorbis/Documentos/GitHub/SO/practica2-2año/ejercicio3",
