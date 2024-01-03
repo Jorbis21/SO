@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": false,
-      "cwd": "/home/jorbis/Documentos/GitHub/SO/practica3/ejercicio4",
-      "program": "/home/jorbis/Documentos/GitHub/SO/practica3/ejercicio4/build/Debug/outDebug",
+      "cwd": "/home/jorbis/Documentos/GitHub/SO/practica4/ejercicio3",
+      "program": "/home/jorbis/Documentos/GitHub/SO/practica4/ejercicio3/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
